@@ -1,21 +1,32 @@
-import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Button, TouchableOpacity,ScrollView } from "react-native";
 import React from "react";
 import LocationContext from "../context/LocationContext";
-export default function Location() {
+export default function Location({ navigation }: any) {
   let { myLocation, prevLocation, deleteLocation, removeAll }: any =
     React.useContext(LocationContext);
   let { address, time } = myLocation;
+
+  function googleMap() {
+    navigation.navigate("Google Map");
+  }
   return (
+    <ScrollView>
+
+   
     <View style={styles.container}>
       <View>
         <Text style={styles.title}>Location Manager</Text>
       </View>
-      <Text style={styles.subTitle}>Current Location</Text>
+      <View>
+        <Text style={styles.subTitle}>Current Location</Text>
+      </View>
       <View style={styles.location}>
         <Text style={styles.address}>{address}</Text>
         <Text style={styles.time}>{time}</Text>
       </View>
-      <Text style={styles.subTitle}>Previous Location</Text>
+      <View>
+        <Text style={styles.subTitle}>Previous Location</Text>
+      </View>
       {prevLocation.slice(-30).map((ele: any, id: any) => {
         return (
           <View key={id}>
@@ -37,7 +48,12 @@ export default function Location() {
       <TouchableOpacity style={styles.btnRemoveAll} onPress={() => removeAll()}>
         <Text style={styles.textColor}>Clear All</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.googleMap} onPress={googleMap}>
+        <Text style={styles.textColor}>View Google Map</Text>
+      </TouchableOpacity>
     </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
@@ -79,6 +95,14 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 300,
     height: 40,
+  },
+  googleMap: {
+    backgroundColor: "#7888fc",
+    width: 300,
+    padding: 10,
+    height: 40,
+    alignItems: "center",
+    marginTop: 20,
   },
   textColor: {
     color: "white",
