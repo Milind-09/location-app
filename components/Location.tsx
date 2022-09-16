@@ -1,6 +1,15 @@
-import { View, Text, StyleSheet, Button, TouchableOpacity,ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import LocationContext from "../context/LocationContext";
+
 export default function Location({ navigation }: any) {
   let { myLocation, prevLocation, deleteLocation, removeAll }: any =
     React.useContext(LocationContext);
@@ -11,48 +20,51 @@ export default function Location({ navigation }: any) {
   }
   return (
     <ScrollView>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.title}>Location Manager</Text>
+        </View>
+        <View>
+          <Text style={styles.subTitle}>Current Location</Text>
+        </View>
+        <View style={styles.location}>
+          <Text style={styles.address}>{address}</Text>
+          <Text style={styles.time}>{time}</Text>
+        </View>
+        <View>
+          <Text style={styles.subTitle}>Previous Location</Text>
+        </View>
+        {prevLocation.map((ele: any,) => {
+          return (
+            <View key={ele.id}>
+              <View style={styles.location}>
+                <Text>{ele.address}</Text>
+                <Text>{ele.time}</Text>
+              </View>
 
-   
-    <View style={styles.container}>
-      <View>
-        <Text style={styles.title}>Location Manager</Text>
-      </View>
-      <View>
-        <Text style={styles.subTitle}>Current Location</Text>
-      </View>
-      <View style={styles.location}>
-        <Text style={styles.address}>{address}</Text>
-        <Text style={styles.time}>{time}</Text>
-      </View>
-      <View>
-        <Text style={styles.subTitle}>Previous Location</Text>
-      </View>
-      {prevLocation.slice(-30).map((ele: any, id: any) => {
-        return (
-          <View key={id}>
-            <View style={styles.location}>
-              <Text>{ele.address}</Text>
-              <Text>{ele.time}</Text>
+              <TouchableOpacity
+                style={styles.btnRemove}
+                onPress={() => deleteLocation(ele.id)}
+              >
+                <Text>Remove</Text>
+              </TouchableOpacity>
             </View>
+          );
+        })}  
 
-            <TouchableOpacity
-              style={styles.btnRemove}
-              onPress={() => deleteLocation(id)}
-            >
-              <Text>Remove</Text>
-            </TouchableOpacity>
-          </View>
-        );
-      })}
+       
 
-      <TouchableOpacity style={styles.btnRemoveAll} onPress={() => removeAll()}>
-        <Text style={styles.textColor}>Clear All</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btnRemoveAll}
+          onPress={() => removeAll()}
+        >
+          <Text style={styles.textColor}>Clear All</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.googleMap} onPress={googleMap}>
-        <Text style={styles.textColor}>View Google Map</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.googleMap} onPress={googleMap}>
+          <Text style={styles.textColor}>View Google Map</Text>
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
